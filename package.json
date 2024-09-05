@@ -12,9 +12,11 @@
     "generate": "drizzle-kit generate",
     "drop": "drizzle-kit drop",
     "check": "drizzle-kit check",
-    "up": "drizzle-kit up"
+    "up": "drizzle-kit up",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
@@ -35,8 +37,10 @@
     "drizzle-kit": "^0.23.2",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.5",
+    "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.41",
     "prettier": "3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.6",
     "tailwindcss": "^3.4.7",
     "typescript": "^5.5.4"
   }
