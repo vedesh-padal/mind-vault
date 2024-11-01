@@ -50,6 +50,7 @@ export const files = pgTable("files", {
   data: text("data"),
   inTrash: text("in_trash"),
   bannerUrl: text("banner_url"),
+  // should also have reference to workspace - should check later
   folderId: uuid("folder_id").references(() => folders.id, {
     onDelete: "cascade",
   }),

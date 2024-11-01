@@ -6,6 +6,7 @@ interface TitleSectionProps {
   pill?: string;
 }
 
+// FC => Functional Component
 const TitleSection: React.FC<TitleSectionProps> = ({
   title,
   subheading,
