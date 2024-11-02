@@ -1,5 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -33,7 +33,11 @@ export async function updateSession(request: NextRequest) {
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
+
+  console.log('lib/supabase/middleware being called');
+  console.log(user);
+  console.log(request.nextUrl.pathname);
 
   if (
     !user &&
@@ -59,5 +63,24 @@ export async function updateSession(request: NextRequest) {
   // If this is not done, you may be causing the browser and server to go out
   // of sync and terminate the user's session prematurely!
 
-  return supabaseResponse
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!user) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
+
+  const emailLinkError = 'Email link is invalid or has expired';
+  if (request.nextUrl.searchParams.get('error_description') === emailLinkError && request.nextUrl.pathname !== '/signup') {
+    return NextResponse.redirect(new URL(`/signup?error_description=${request.nextUrl.searchParams.get('error_description')}`, request.url))
+  }
+
+  // request is coming form either login or signup and they are already logged in
+  // then redirect them to /dashboard
+  if (['/login', '/signup'].includes(request.nextUrl.pathname)) {
+    if (user) {
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
+  }
+
+  return supabaseResponse;
 }

@@ -28,11 +28,16 @@ const LoginPage = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (formData) => {
-    const {error} = await actionLoginUser(formData);
+    const resData = await actionLoginUser(formData);
 
-    if (error) {
+    console.log(resData);
+    // console.log('ERROR:\n\n\n', error);
+
+    if (resData.error) {
       form.reset();
-      setSubmitError(error.message);
+      setSubmitError(resData.error.message);
+      console.log('ERROR MESSAGE SET IN STATE VARIABLE:\n')
+      console.log(resData.error.message);
     }
 
     router.replace('/dashboard');
@@ -49,23 +54,25 @@ const LoginPage = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full sm:justify-center sm:w-[400px] space-y-6 flex flex-col"
       >
-        <Link href='/' className='w-full flex justify-left pl-6 items-center'>
-          <Image
-            src={Logo}
-            alt="mind-vault logo"
-            width={100}
-            height={100}
-          />
-          <span className='font-semibold dark:text-white text-4xl ml-2'>MindVault.</span>
-        </Link>
-        <FormDescription className='text-foreground/60'>
-          An all-In-One Collaboration and Productivity Platform
-        </FormDescription>
+        <div className="flex flex-col items-center justify-center -ml-3">
+          <Link href='/' className='w-full flex justify-center -ml-6 items-center'>
+            <Image
+              src={Logo}
+              alt="mind-vault logo"
+              width={100}
+              height={100}
+            />
+            <span className='font-semibold dark:text-white text-4xl ml-2'>MindVault.</span>
+          </Link>
+          <FormDescription className='text-foreground/60 ml-4'>
+            An all-In-One Collaboration and Productivity Platform
+          </FormDescription>
+        </div>
         <FormField
           disabled={isLoading}
           control={form.control}
           name="email"
-          render={(field) => (
+          render={({ field }) => (
             <FormItem>
               <FormControl>
                 <Input type='email' placeholder='Email' {...field} />
@@ -80,7 +87,7 @@ const LoginPage = () => {
           disabled={isLoading}
           control={form.control}
           name="password"
-          render={(field) => (
+          render={({ field }) => (
             <FormItem>
               <FormControl>
                 <Input type='password' placeholder='Password' {...field} />

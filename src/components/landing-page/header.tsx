@@ -160,16 +160,17 @@ const Header = () => {
               'dark:text-white': path === '#testimonials',
               'dark:text-white/40': path !== '#testimonials',
               'font-normal': true,
-              'text-xl': true
+              'text-xl': true,
+              'cursor-pointer': true,
             })}>
-              Testimonial
+              Testimonials
             </NavigationMenuLink>
           </NavigationMenuItem>
 
         </NavigationMenuList>
       </NavigationMenu>
       
-      <aside className="flex w-full gap-2 justify-end">
+      <aside className="flex w-full gap-2 justify-end mr-1">
         <Link href={'/login'}>
           <Button variant="btn-secondary" className="dark:text-primary-foreground p-1 hidden sm:block">
             Login
